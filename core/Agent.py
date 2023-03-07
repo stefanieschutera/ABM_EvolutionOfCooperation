@@ -55,7 +55,11 @@ class Agent:
 
 
     def donate(self, recipient, cost, benefit):
-        pass
+        tagDifference = abs(self.tag - recipient.tag)
+        if tagDifference <= self.tolerance:
+            self.fitness -= cost
+            recipient.fitness += benefit
+        return
 
     def compareFitness(self, mate):
         pass
