@@ -1,4 +1,5 @@
 import random
+import copy
 
 from core.Agent import Agent
 
@@ -26,7 +27,7 @@ class CooperationModel:
     
     '''
 
-    def __init__(self, populationSize = 100, cost = 1.0, benefit = 0.05, numberOfPairings = 3, mutationRate = 0.1, toleranceMinimum = 0, cheaterType = None, random_seed = None) -> None:
+    def __init__(self, populationSize = 100, cost = 1.0, benefit = 0.05, numberOfPairings = 3, mutationRate = 0.1, toleranceMinimum = 0, cheaterType = None, networkType = 'complete', randomSeed = None) -> None:
         self.populationSize = populationSize
         self.cost = cost
         self.benefit = benefit
@@ -38,11 +39,13 @@ class CooperationModel:
 
         self.agents = self.initialize_agents()
 
+        self.networkType = networkType
+        
 
-        self.random_seed = random_seed
+        self.randomSeed = randomSeed
 
-        if self.random_seed is not None:
-            random.seed(self.random_seed)
+        if self.randomSeed is not None:
+            random.seed(self.randomSeed)
             #npr.seed(self.random_seed) #just in case we also use numpy random 
 
     
@@ -54,10 +57,28 @@ class CooperationModel:
             agents.add(Agent(ID=id))
 
         return agents
+    
+    def find_mate(self, agent):
+        print(agent.ID)
+
+        setWithoutCurrentAgent = list()
+        for a in self.agents:
+            if a.ID != agent.ID:
+                setWithoutCurrentAgent.append(a)
+        
+        
+        mate = random.choice(setWithoutCurrentAgent)
+
+        return mate
+        
         
     def pairing(self):
         #Pairing Phase, Agents donate
-        pass
+        for agent in self.agents:
+            for p in range(self.numberOfPairings):
+                mate = self.find_mate(agent)
+                agent.donate(recipient = mate, cost = self.cost, benefit = self.benefit)
+        
 
     def mating(self):
         #Mating Phase, Agents Compare Fitness
@@ -67,8 +88,12 @@ class CooperationModel:
         #Mutation Phase, Agents Reproduce
         pass
 
-    def run(self):
-        #Running the model
+    def step(self):
+        #Running the model one step
+        self.pairing()
+        self.mating()
+        self.mutating()
+
         pass
 
     
