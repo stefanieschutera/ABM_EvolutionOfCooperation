@@ -34,6 +34,10 @@ class CooperationModel:
         self.benefit = benefit
         self.numberOfPairings = numberOfPairings
         self.mutationRate = mutationRate
+        centreOfDistribution = 0
+        standardDeviationOfDistribution = 0.01
+        self.noise = np.random.normal(
+            centreOfDistribution, standardDeviationOfDistribution)
         self.toleranceMinimum = toleranceMinimum
         self.cheaterType = cheaterType
         self.agents = self.initialize_agents()
@@ -72,7 +76,7 @@ class CooperationModel:
 
     def mutating(self):
         for agent in self.agents:
-            agent.mutate(self.mutationRate)
+            agent.mutate(self.mutationRate, self.noise)
 
     def giving_birth_to_next_gen(self):
         for agent in self.agents:
