@@ -87,13 +87,13 @@ class CooperationModel:
         self.pairing()
         self.mating()
         self.mutating()
-        self.getDonationStatisticForGeneration()
+        statsPerGen = self.getDonationStatisticForGeneration()
         self.giving_birth_to_next_gen()
+        return statsPerGen
 
     def getDonationStatisticForGeneration(self):
         getGenStats = StatsPerGen()
         for agent in self.agents:
             getGenStats.sumOfDonationsMadeInGen += agent.donationsMade
             getGenStats.sumOfDonationAttemptedInGen += agent.donationsAttempted
-        print("Donation Rate for the generation = ",
-              getGenStats.sumOfDonationsMadeInGen / getGenStats.sumOfDonationAttemptedInGen)
+        return getGenStats

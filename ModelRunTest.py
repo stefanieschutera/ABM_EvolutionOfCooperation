@@ -1,11 +1,14 @@
 from core.CooperationModel import CooperationModel
+from core.StatsPerGen import StatsPerGen
 
 testModel = CooperationModel(populationSize=10)
 
 for agent in testModel.agents:
     print(agent.ID, agent.fitness, agent.tag, agent.tolerance)
 
-testModel.step()
+for index in range(3):
+    statsPerGen = testModel.step()
+    statsPerGen.printStats()
 
 for agent in testModel.agents:
     print(agent.ID, agent.fitness, agent.tag, agent.tolerance)
