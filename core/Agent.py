@@ -47,6 +47,9 @@ class Agent:
         if tagDifference <= self.tolerance:
             self.fitness -= cost
             recipient.fitness += benefit
+            self.donations_made += 1
+        self.donations_attempted += 1
+
 
     def compare_fitness(self, mate):
         if self.fitness > mate.fitness:
