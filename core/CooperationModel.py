@@ -1,5 +1,6 @@
 import random
 import copy
+import numpy as np
 
 from core.Agent import Agent
 
@@ -46,7 +47,7 @@ class CooperationModel:
 
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
-            #npr.seed(self.random_seed) #just in case we also use numpy random 
+            np.random.seed(self.randomSeed)
 
     
     def initialize_agents(self):
@@ -59,7 +60,7 @@ class CooperationModel:
         return agents
     
     def find_mate(self, agent):
-        print(agent.ID)
+
 
         setWithoutCurrentAgent = list()
         for a in self.agents:
@@ -82,19 +83,29 @@ class CooperationModel:
 
     def mating(self):
         #Mating Phase, Agents Compare Fitness
-        pass
+        for agent in self.agents:
+            mate = self.find_mate(agent)
+            agent.compareFitness(mate)
+
 
     def mutating(self):
         #Mutation Phase, Agents Reproduce
-        pass
+        for agent in self.agents:
+            agent.mutate(self.mutationRate)
+
+
+
+    def generateNewGeneration(self):
+        for agent in self.agents:
+            agent.reproduce()
 
     def step(self):
         #Running the model one step
         self.pairing()
         self.mating()
         self.mutating()
+        self.generateNewGeneration()
 
-        pass
 
     
 

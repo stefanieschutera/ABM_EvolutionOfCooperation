@@ -1,5 +1,6 @@
 import copy
 import random
+import numpy as np
 
 class Agent:
     '''
@@ -44,9 +45,9 @@ class Agent:
         
         self.fitness = 0
 
-        self.child_tag = copy.copy(self.tag)
-        self.child_tolerance = copy.copy(self.tolerance)
-        self.child_cheater_flag = copy.copy(self.cheater_flag)
+        self.child_tag = None
+        self.child_tolerance = None
+        self.child_cheater_flag = None
 
         self.donations_made = 0
         self.donations_attempted = 0
@@ -62,9 +63,37 @@ class Agent:
         return
 
     def compareFitness(self, mate):
-        pass
+        if self.fitness > mate.fitness:
+            self.child_tag = copy.deepcopy(self.tag)
+            self.child_tolerance = copy.deepcopy(self.tolerance)
+            self.child_cheater_flag = copy.deepcopy(self.cheater_flag)
+        elif self.fitness < mate.fitness:
+            self.child_tag = copy.deepcopy(mate.tag)
+            self.child_tolerance = copy.deepcopy(mate.tolerance)
+            self.child_cheater_flag = copy.deepcopy(mate.cheater_flag)
+        else :
+            # randomly select between an agent and mate
+
+            selectedagent = random.choice([self, mate])
+            self.child_tag = copy.deepcopy(selectedagent.tag)
+            self.child_tolerance = copy.deepcopy(selectedagent.tolerance)
+            self.child_cheater_flag = copy.deepcopy(selectedagent.cheater_flag)
+
+    def mutate(self, mutationRate):
+        if random.random() < mutationRate:
+            noise = np.random.normal(0, 0.01)
+            self.child_tolerance += noise
+            if self.child_tolerance < 0:
+                self.child_tolerance = 0
+            self.child_tag = random.random()
+
 
     def reproduce(self):
-        pass
+        self.tolerance = copy.deepcopy(self.child_tolerance)
+        self.tag = copy.deepcopy(self.child_tag)
+        self.cheater_flag = copy.deepcopy(self.child_cheater_flag)
+        self.child_tag = None
+        self.child_tolerance = None
+        self.child_cheater_flag = None
+        self.fitness = 0
 
-    
