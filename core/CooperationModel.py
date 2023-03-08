@@ -1,5 +1,4 @@
 import random
-import copy
 import numpy as np
 
 from core.Agent import Agent
@@ -33,40 +32,30 @@ class CooperationModel:
         self.populationSize = populationSize
         self.cost = cost
         self.benefit = benefit
-
         self.numberOfPairings = numberOfPairings
         self.mutationRate = mutationRate
         self.toleranceMinimum = toleranceMinimum
         self.cheaterType = cheaterType
-
         self.agents = self.initialize_agents()
-
         self.networkType = networkType
-
         self.randomSeed = randomSeed
-
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
             np.random.seed(self.randomSeed)
 
     def initialize_agents(self):
-
         agents = set()
-
-        for id in range(1, self.populationSize + 1):
-            agents.add(Agent(ID=id))
-
+        for i in range(1, self.populationSize + 1):
+            agents.add(Agent(ID=i))
         return agents
 
-    def find_mate(self, agent):
+    def find_mate(self, currentAgent):
+        allExceptCurrentAgent = list()  # TODO why is this a list
+        for agent in self.agents:
+            if agent.ID != currentAgent.ID:
+                allExceptCurrentAgent.append(agent)
 
-        setWithoutCurrentAgent = list()
-        for a in self.agents:
-            if a.ID != agent.ID:
-                setWithoutCurrentAgent.append(a)
-
-        mate = random.choice(setWithoutCurrentAgent)
-
+        mate = random.choice(allExceptCurrentAgent)
         return mate
 
     def pairing(self):
@@ -88,13 +77,13 @@ class CooperationModel:
         for agent in self.agents:
             agent.mutate(self.mutationRate)
 
-    def generateNewGeneration(self):
+    def givingBirthToNextGen(self):
         for agent in self.agents:
-            agent.reproduce()
+            agent.giveBirth()
 
     def step(self):
         # Running the model one step
         self.pairing()
         self.mating()
         self.mutating()
-        self.generateNewGeneration()
+        self.givingBirthToNextGen()

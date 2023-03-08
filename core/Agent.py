@@ -87,7 +87,7 @@ class Agent:
                 self.child_tolerance = 0
             self.child_tag = random.random()
 
-    def reproduce(self):
+    def giveBirth(self):
         self.tolerance = copy.deepcopy(self.child_tolerance)
         self.tag = copy.deepcopy(self.child_tag)
         self.cheater_flag = copy.deepcopy(self.child_cheater_flag)
