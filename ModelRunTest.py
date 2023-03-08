@@ -9,5 +9,3 @@ testModel.step()
 
 for agent in testModel.agents:
     print(agent.ID, agent.fitness, agent.tag, agent.tolerance)
-
-

@@ -2,11 +2,12 @@ import copy
 import random
 import numpy as np
 
+
 class Agent:
     '''
     Class holding the agents of the ABM
 
-    
+
     Attributes
     ---------------
     Tag: float
@@ -14,7 +15,7 @@ class Agent:
     Tolerance: float
         Individual agent tolerance
         Initially on [0,1] then >= LOWER_TOLERANCE
-    
+
     cheater_flag        ;; initially FALSE
     child_tag
     child_tolerance
@@ -33,16 +34,16 @@ class Agent:
         Arguments to provide are
     ...
     ...
-    
+
     '''
 
     def __init__(self, ID) -> None:
         self.ID = ID
 
-        self.tag = random.random() 
-        self.tolerance = random.random() 
+        self.tag = random.random()
+        self.tolerance = random.random()
         self.cheater_flag = False
-        
+
         self.fitness = 0
 
         self.child_tag = None
@@ -53,7 +54,6 @@ class Agent:
         self.donations_attempted = 0
         self.donations_made_forever = 0
         self.donations_attempted_forever = 0
-
 
     def donate(self, recipient, cost, benefit):
         tagDifference = abs(self.tag - recipient.tag)
@@ -71,7 +71,7 @@ class Agent:
             self.child_tag = copy.deepcopy(mate.tag)
             self.child_tolerance = copy.deepcopy(mate.tolerance)
             self.child_cheater_flag = copy.deepcopy(mate.cheater_flag)
-        else :
+        else:
             # randomly select between an agent and mate
 
             selectedagent = random.choice([self, mate])
@@ -87,7 +87,6 @@ class Agent:
                 self.child_tolerance = 0
             self.child_tag = random.random()
 
-
     def reproduce(self):
         self.tolerance = copy.deepcopy(self.child_tolerance)
         self.tag = copy.deepcopy(self.child_tag)
@@ -96,4 +95,3 @@ class Agent:
         self.child_tolerance = None
         self.child_cheater_flag = None
         self.fitness = 0
-

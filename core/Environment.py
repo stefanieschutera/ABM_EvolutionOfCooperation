@@ -3,10 +3,10 @@ class Environment:
     '''
     Class holding the environment of the ABM
     Idea: Model this already as a network, use maybe NetworkX
-    
+
     Attributes
     ---------------
-    
+
     ...
     ...
 
@@ -18,5 +18,5 @@ class Environment:
         Arguments to provide are
     ...
     ...
-    
+
     '''

@@ -1,10 +1,11 @@
 # ABM_EvolutionOfCooperation
 
 ## WHAT IS IT?
-This model demonstrates how a population can evolve high levels of altruism in a structured population with or without the presence of social parasites. In this model, population is structured as a ring and agents may interact with others along the ring determined by the global variable neighborhood_radius. 
 
+This model demonstrates how a population can evolve high levels of altruism in a structured population with or without the presence of social parasites. In this model, population is structured as a ring and agents may interact with others along the ring determined by the global variable neighborhood_radius.
 
 ## HOW IT WORKS
+
 The world is populated with [population_size] agents arrayed along a ring, each of which has three attributes: a [tag], a [tolerance], and a [cheater_flag]. [tag] and [tolerance] values are initially randomly drawn, with uniform distribution, from [0,1]. [cheater_flag] is initially FALSE for all agents (meaning that they are not cheaters).
 
 During each generation, every agent of the population randomly selects [pairings] partners, with replacement, from its neighborhood with which to interact. During an interaction, the selecting agent assess how similar it is to its partner. It does this by comparing the difference between their [tag] values and the selecting agent's threshold of allowable differnce, or [tolerance]. If they are sufficiently similar, the selecting agent pays [cost] and the partner receives [benefit]. If they are not sufficiently similar, nothing changes and the interaction ends.
@@ -15,22 +16,21 @@ Mutation is applied separately to each agent attribute (tag and tolerance) with 
 
 Monitors track how frequently a donation - synonymous with an act of altruism - takes place within the population.
 
-
 ## HOW TO USE IT
-Enter a desired population size. This will create a ring network. For this network select a neighborhood_size which determines how far along the ring that an agent may interact with other agents. 
 
+Enter a desired population size. This will create a ring network. For this network select a neighborhood_size which determines how far along the ring that an agent may interact with other agents.
 
 ## RELATION TO PUBLISHED WORK
+
 This is the model used to present results in [1] and [2]. In those cases the [social_parasite_type] was not none, meaning that cheaters were present.
 
 When [social_parasite_type] is set to none, all of the following apply:
 
-If agents can interact along the entire ring and minimum_tolerance = 0, the model replicates that presented in [3] (with the  selection routine corrected as per [4]).
+If agents can interact along the entire ring and minimum_tolerance = 0, the model replicates that presented in [3] (with the selection routine corrected as per [4]).
 
-If instead, minimum_tolerance = 1x10E-6, the model replicates [5], which was a response to [4]. 
+If instead, minimum_tolerance = 1x10E-6, the model replicates [5], which was a response to [4].
 
 By reducing the neighborhood_radius such that agents can only interact with a subset of the entire population, the model replicates [6].
-
 
 References:
 [1] Shutters & Hales (2013). "Tag-Mediated Altruism is Contingent on How Cheaters Are Defined", J. Artif. Societ. Soc. Simul. 16:4, http://jasss.soc.surrey.ac.uk/16/1/4.html
