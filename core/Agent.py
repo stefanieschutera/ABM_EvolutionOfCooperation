@@ -41,15 +41,16 @@ class Agent:
         self.childTag = None
         self.childTolerance = None
         self.childCheaterFlag = None
+        self.donationsMade = 0
+        self.donationsAttempted = 0
 
     def donate(self, recipient, cost, benefit):
         tagDifference = abs(self.tag - recipient.tag)
         if tagDifference <= self.tolerance:
             self.fitness -= cost
             recipient.fitness += benefit
-            self.donations_made += 1
-        self.donations_attempted += 1
-
+            self.donationsMade += 1
+        self.donationsAttempted += 1
 
     def compare_fitness(self, mate):
         if self.fitness > mate.fitness:

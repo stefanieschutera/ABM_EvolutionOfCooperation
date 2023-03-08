@@ -4,6 +4,7 @@ import numpy as np
 from core.Agent import Agent
 from core.StatsPerGen import StatsPerGen
 
+
 class CooperationModel:
     '''
     Class holding the environment of the ABM
@@ -92,7 +93,7 @@ class CooperationModel:
     def getDonationStatisticForGeneration(self):
         getGenStats = StatsPerGen()
         for agent in self.agents:
-            getGenStats.sumOfDonationsMadeInGen += agent.donations_made
-            getGenStats.sumOfDonationAttemptedInGen += agent.donations_attempted
-        print("Donation Rate for the generation = ", getGenStats.sumOfDonationsMadeInGen / getGenStats.sumOfDonationAttemptedInGen)
-
+            getGenStats.sumOfDonationsMadeInGen += agent.donationsMade
+            getGenStats.sumOfDonationAttemptedInGen += agent.donationsAttempted
+        print("Donation Rate for the generation = ",
+              getGenStats.sumOfDonationsMadeInGen / getGenStats.sumOfDonationAttemptedInGen)
