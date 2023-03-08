@@ -38,10 +38,10 @@ class CooperationModel:
         standardDeviationOfDistribution = 0.01
         self.noise = np.random.normal(
             centreOfDistribution, standardDeviationOfDistribution)
-        self.toleranceMinimum = toleranceMinimum
-        self.cheaterType = cheaterType
+        self.toleranceMinimum = toleranceMinimum  # TODO use it
+        self.cheaterType = cheaterType  # TODO use it
         self.agents = self.initialize_agents()
-        self.networkType = networkType
+        self.networkType = networkType  # TODO use it
         self.randomSeed = randomSeed
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
