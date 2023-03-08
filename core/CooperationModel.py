@@ -2,7 +2,7 @@ import random
 import numpy as np
 
 from core.Agent import Agent
-
+from core.StatsPerGen import StatsPerGen
 
 class CooperationModel:
     '''
@@ -86,4 +86,12 @@ class CooperationModel:
         self.pairing()
         self.mating()
         self.mutating()
+        self.getDonationStatisticForGeneration()
         self.givingBirthToNextGen()
+
+    def getDonationStatisticForGeneration(self):
+        getGenStats = StatsPerGen()
+        for agent in self.agents:
+            getGenStats.sumOfDonationsMadeInGen += agent.donations_made
+            getGenStats.sumOfDonationAttemptedInGen += agent.donations_attempted
+        print("Donation Rate for the generation = ", getGenStats.sumOfDonationsMadeInGen / getGenStats.sumOfDonationAttemptedInGen)
