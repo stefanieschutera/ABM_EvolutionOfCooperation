@@ -73,9 +73,9 @@ class CooperationModel:
         plt.show()
 
     def find_mate(self, currentAgent):
-        allNeighborsWithinRadius = nx.single_source_shortest_path(self.network, currentAgent, cutoff=self.radiusForMateSelection)
-        allNeighborsWithinRadius.pop(currentAgent)
-        mate = random.choice(list(allNeighborsWithinRadius))
+        neighborsWithinRadius = nx.single_source_shortest_path(self.network, currentAgent, cutoff=self.radiusForMateSelection)
+        neighborsWithinRadius.pop(currentAgent)
+        mate = random.choice(list(neighborsWithinRadius))
         return mate
 
     def pairing(self):
