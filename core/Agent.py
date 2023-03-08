@@ -21,11 +21,6 @@ class Agent:
     child_tolerance
     child_cheater_flag
     fitness
-    donations_made
-    donations_attempted
-    donations_made_forever
-    donations_attempted_forever
-
 
     Methods
     ----------------
@@ -39,21 +34,13 @@ class Agent:
 
     def __init__(self, ID) -> None:
         self.ID = ID
-
         self.tag = random.random()
         self.tolerance = random.random()
-        self.cheater_flag = False
-
+        self.cheaterFlag = False
         self.fitness = 0
-
-        self.child_tag = None
-        self.child_tolerance = None
-        self.child_cheater_flag = None
-
-        self.donations_made = 0
-        self.donations_attempted = 0
-        self.donations_made_forever = 0
-        self.donations_attempted_forever = 0
+        self.childTag = None
+        self.childTolerance = None
+        self.childCheaterFlag = None
 
     def donate(self, recipient, cost, benefit):
         tagDifference = abs(self.tag - recipient.tag)
@@ -62,38 +49,31 @@ class Agent:
             recipient.fitness += benefit
             self.donations_made += 1
         self.donations_attempted += 1
-        return
 
-    def compareFitness(self, mate):
+
+    def compare_fitness(self, mate):
         if self.fitness > mate.fitness:
-            self.child_tag = copy.deepcopy(self.tag)
-            self.child_tolerance = copy.deepcopy(self.tolerance)
-            self.child_cheater_flag = copy.deepcopy(self.cheater_flag)
+            parent = self
         elif self.fitness < mate.fitness:
-            self.child_tag = copy.deepcopy(mate.tag)
-            self.child_tolerance = copy.deepcopy(mate.tolerance)
-            self.child_cheater_flag = copy.deepcopy(mate.cheater_flag)
+            parent = mate
         else:
-            # randomly select between an agent and mate
+            parent = random.choice([self, mate])
+        self._set_child_attributes(parent)
 
-            selectedagent = random.choice([self, mate])
-            self.child_tag = copy.deepcopy(selectedagent.tag)
-            self.child_tolerance = copy.deepcopy(selectedagent.tolerance)
-            self.child_cheater_flag = copy.deepcopy(selectedagent.cheater_flag)
+    def _set_child_attributes(self, parent):
+        self.childTag = copy.deepcopy(parent.tag)
+        self.childTolerance = copy.deepcopy(parent.tolerance)
+        self.childCheaterFlag = copy.deepcopy(parent.cheaterFlag)
 
-    def mutate(self, mutationRate):
+    def mutate(self, mutationRate, noise):
         if random.random() < mutationRate:
-            noise = np.random.normal(0, 0.01)
-            self.child_tolerance += noise
-            if self.child_tolerance < 0:
-                self.child_tolerance = 0
-            self.child_tag = random.random()
+            self.childTolerance += noise
+            if self.childTolerance < 0:
+                self.childTolerance = 0
+            self.childTag = random.random()
 
-    def giveBirth(self):
-        self.tolerance = copy.deepcopy(self.child_tolerance)
-        self.tag = copy.deepcopy(self.child_tag)
-        self.cheater_flag = copy.deepcopy(self.child_cheater_flag)
-        self.child_tag = None
-        self.child_tolerance = None
-        self.child_cheater_flag = None
-        self.fitness = 0
+    def give_birth(self):
+        self.tolerance = copy.deepcopy(self.childTolerance)
+        self.tag = copy.deepcopy(self.childTag)
+        self.cheaterFlag = copy.deepcopy(self.childCheaterFlag)
+        self.childTag, self.childTolerance, self.childCheaterFlag, self.fitness = None, None, None, 0
