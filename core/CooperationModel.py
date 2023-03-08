@@ -50,7 +50,7 @@ class CooperationModel:
         return agents
 
     def find_mate(self, currentAgent):
-        allExceptCurrentAgent = list()  # TODO why is this a list
+        allExceptCurrentAgent = list()
         for agent in self.agents:
             if agent.ID != currentAgent.ID:
                 allExceptCurrentAgent.append(agent)
@@ -59,7 +59,6 @@ class CooperationModel:
         return mate
 
     def pairing(self):
-        # Pairing Phase, Agents donate
         for agent in self.agents:
             for p in range(self.numberOfPairings):
                 mate = self.find_mate(agent)
@@ -67,23 +66,20 @@ class CooperationModel:
                              benefit=self.benefit)
 
     def mating(self):
-        # Mating Phase, Agents Compare Fitness
         for agent in self.agents:
             mate = self.find_mate(agent)
-            agent.compareFitness(mate)
+            agent.compare_fitness(mate)
 
     def mutating(self):
-        # Mutation Phase, Agents Reproduce
         for agent in self.agents:
             agent.mutate(self.mutationRate)
 
-    def givingBirthToNextGen(self):
+    def giving_birth_to_next_gen(self):
         for agent in self.agents:
-            agent.giveBirth()
+            agent.give_birth()
 
     def step(self):
-        # Running the model one step
         self.pairing()
         self.mating()
         self.mutating()
-        self.givingBirthToNextGen()
+        self.giving_birth_to_next_gen()
