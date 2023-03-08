@@ -1,9 +1,8 @@
 import random
-import copy
 import numpy as np
 
 from core.Agent import Agent
-
+from core.StatsPerGen import StatsPerGen
 
 class CooperationModel:
     '''
@@ -33,44 +32,37 @@ class CooperationModel:
         self.populationSize = populationSize
         self.cost = cost
         self.benefit = benefit
-
         self.numberOfPairings = numberOfPairings
         self.mutationRate = mutationRate
-        self.toleranceMinimum = toleranceMinimum
-        self.cheaterType = cheaterType
-
+        centreOfDistribution = 0
+        standardDeviationOfDistribution = 0.01
+        self.noise = np.random.normal(
+            centreOfDistribution, standardDeviationOfDistribution)
+        self.toleranceMinimum = toleranceMinimum  # TODO use it
+        self.cheaterType = cheaterType  # TODO use it
         self.agents = self.initialize_agents()
-
-        self.networkType = networkType
-
+        self.networkType = networkType  # TODO use it
         self.randomSeed = randomSeed
-
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
             np.random.seed(self.randomSeed)
 
     def initialize_agents(self):
-
         agents = set()
-
-        for id in range(1, self.populationSize + 1):
-            agents.add(Agent(ID=id))
-
+        for i in range(1, self.populationSize + 1):
+            agents.add(Agent(ID=i))
         return agents
 
-    def find_mate(self, agent):
+    def find_mate(self, currentAgent):
+        allExceptCurrentAgent = list()
+        for agent in self.agents:
+            if agent.ID != currentAgent.ID:
+                allExceptCurrentAgent.append(agent)
 
-        setWithoutCurrentAgent = list()
-        for a in self.agents:
-            if a.ID != agent.ID:
-                setWithoutCurrentAgent.append(a)
-
-        mate = random.choice(setWithoutCurrentAgent)
-
+        mate = random.choice(allExceptCurrentAgent)
         return mate
 
     def pairing(self):
-        # Pairing Phase, Agents donate
         for agent in self.agents:
             for p in range(self.numberOfPairings):
                 mate = self.find_mate(agent)
@@ -78,23 +70,29 @@ class CooperationModel:
                              benefit=self.benefit)
 
     def mating(self):
-        # Mating Phase, Agents Compare Fitness
         for agent in self.agents:
             mate = self.find_mate(agent)
-            agent.compareFitness(mate)
+            agent.compare_fitness(mate)
 
     def mutating(self):
-        # Mutation Phase, Agents Reproduce
         for agent in self.agents:
-            agent.mutate(self.mutationRate)
+            agent.mutate(self.mutationRate, self.noise)
 
-    def generateNewGeneration(self):
+    def giving_birth_to_next_gen(self):
         for agent in self.agents:
-            agent.reproduce()
+            agent.give_birth()
 
     def step(self):
-        # Running the model one step
         self.pairing()
         self.mating()
         self.mutating()
-        self.generateNewGeneration()
+        self.getDonationStatisticForGeneration()
+        self.giving_birth_to_next_gen()
+
+    def getDonationStatisticForGeneration(self):
+        getGenStats = StatsPerGen()
+        for agent in self.agents:
+            getGenStats.sumOfDonationsMadeInGen += agent.donations_made
+            getGenStats.sumOfDonationAttemptedInGen += agent.donations_attempted
+        print("Donation Rate for the generation = ", getGenStats.sumOfDonationsMadeInGen / getGenStats.sumOfDonationAttemptedInGen)
+
