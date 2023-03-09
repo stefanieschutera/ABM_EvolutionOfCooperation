@@ -1,41 +1,86 @@
 from core.CooperationModel import CooperationModel
-import pandas as pd
-from datetime import datetime
+import json
+
+
+def mean_donation_rate_of_one_run(donationRate):
+    numberOfSteps = len(donationRate)
+    ratioOfRelevantLastSteps = 0.033
+    relevantSteps = int(numberOfSteps * ratioOfRelevantLastSteps) 
+    meanDonationRateOfLastSteps = sum(donationRate[-relevantSteps:]) / relevantSteps
+    return meanDonationRateOfLastSteps
 
 
 
-def run_model(ourModel, numberOfSteps = 30000):
-    
-    d = {'donations': [], 'donationsAttempted': []}
-    statsDf = pd.DataFrame(data=d)
-
+def run_model(ourModel, numberOfSteps = 100, saveDonationRateList = False, pathToFile = None):
+    donationRate = list()
     for i in range(numberOfSteps):
-        ourModel.step()
-        statsPerGen = ourModel.get_donation_statistic_for_gen()
-        genDf = pd.DataFrame({'donations': [statsPerGen.sumOfDonationsMadeInGen], 'donationsAttempted': [statsPerGen.sumOfDonationAttemptedInGen]})
-        pd.concat([statsDf, genDf])
-
-    # Last generation
-    statsPerGen.printStats()
-
-    #TODO Save statsDf
-
-def tun_sensitivity_analysis(): #TODO define parameters
-    pass
+        statsPerGen = ourModel.step()
+        donationRate.append(statsPerGen.donationRateInGen)
+    meanDonationRateOfLastSteps = mean_donation_rate_of_one_run(donationRate=donationRate)
     
+    if saveDonationRateList == True:
+        file = open(pathToFile,'w+')
+        file.writelines(donationRate)
+        file.close()
+
+    return meanDonationRateOfLastSteps 
 
 
-now = datetime.now()
+def run_sensitivity_analysis(numberOfSteps = 100, 
+                             populationSize=400, 
+                             toleranceMinimum=0, 
+                             costAndBenefitRange = [(0.05, 1)], 
+                             numberOfPairingsRange=[3], 
+                             mutationRateRange=[0.1], 
+                             cheaterMutationRateRange=[0], 
+                             networkTypeRange=['complete'], 
+                             radiusForMateSelectionRange = [1], 
+                             pathToFile = None): 
+    
+    model = CooperationModel(populationSize=populationSize, toleranceMinimum=toleranceMinimum)
+    output = list()
+    runNumber = 1
 
-current_time = now.strftime("%H:%M:%S")
-print("Current Time =", current_time)
+    for costAndBenefit in costAndBenefitRange:
+        cost = costAndBenefit[0]
+        benefit = costAndBenefit[1]
+        for numberOfPairings in numberOfPairingsRange:
+            for mutationRate in mutationRateRange:
+                for cheaterMutationRate in cheaterMutationRateRange:
+                    for networkType in networkTypeRange:
+                        for radiusForMateSelection in radiusForMateSelectionRange:
+                            #modelCopy = copy.deepcopy(model)
+                            modelCopy = CooperationModel(populationSize=populationSize, toleranceMinimum=toleranceMinimum) #TODO Just for testing!!
+                            modelCopy.cost = cost
+                            modelCopy.benefit = benefit
+                            modelCopy.numberOfPairings = numberOfPairings
+                            modelCopy.mutationRate = mutationRate
+                            modelCopy.cheaterMutationRate = cheaterMutationRate
+                            modelCopy.networkType = networkType
+                            modelCopy.radiusForMateSelection = radiusForMateSelection
+
+                            meanDonationRateOfLastSteps = run_model(modelCopy, numberOfSteps=numberOfSteps)
+                            parameters = {'numberOfSteps': numberOfSteps, 
+                                             'populationSize': populationSize,
+                                             'toleranceMinimum': toleranceMinimum,
+                                             'cost': cost,
+                                             'benefit': benefit,
+                                             'numberOfPairings': numberOfPairings,
+                                             'mutationRate': mutationRate,
+                                             'cheaterMutationRate': cheaterMutationRate,
+                                             'networkType': networkType,
+                                             'radiusForMateSelection': radiusForMateSelection
+                                             }
+                            
+                            output.append({'meanDonationRateOfLastSteps': meanDonationRateOfLastSteps, 'parameters': parameters})
+                            
+    outputJson = json.dumps(output, indent=4)
+    with open(pathToFile, "w") as outfile:
+        outfile.write(outputJson)
+    
+                            
+                                
+                            
+                            
 
 
-ourModel = CooperationModel(populationSize=400)
-
-run_model(ourModel)
-
-now = datetime.now()
-
-current_time = now.strftime("%H:%M:%S")
-print("Current Time =", current_time)
