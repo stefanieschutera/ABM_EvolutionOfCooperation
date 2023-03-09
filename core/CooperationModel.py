@@ -115,5 +115,6 @@ class CooperationModel:
         for agent in self.agents:
             statsPerGen.sumOfDonationsMadeInGen += agent.donationsMade
             statsPerGen.sumOfDonationAttemptedInGen += agent.donationsAttempted
+        statsPerGen.donationRateInGen = statsPerGen.sumOfDonationsMadeInGen / statsPerGen.sumOfDonationAttemptedInGen
         return statsPerGen
 
