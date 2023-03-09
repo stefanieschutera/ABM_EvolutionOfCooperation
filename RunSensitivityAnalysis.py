@@ -6,14 +6,15 @@ sys.setrecursionlimit(100000)
 
 start = datetime.now()
 
-file = './output/sensitivity_analysis/test.txt'
+file = 'output/test.json'
+
 numberOfSteps = 100
 
 run_sensitivity_analysis(numberOfSteps = numberOfSteps, 
                              populationSize=400, 
                              toleranceMinimum=0, 
                              costAndBenefitRange = [(0.05, 1)], 
-                             numberOfPairingsRange=[1,2,3], 
+                             numberOfPairingsRange=[1,2,3,4,5], 
                              mutationRateRange=[0.1], 
                              cheaterMutationRateRange=[0], 
                              networkTypeRange=['complete'], 

@@ -1,11 +1,12 @@
 from core.CooperationModel import CooperationModel
-import copy
+import json
 
 
 def mean_donation_rate_of_one_run(donationRate):
     numberOfSteps = len(donationRate)
-    relevantStepsForCalculation = int(numberOfSteps * 0.033)
-    meanDonationRateOfLastSteps = sum(donationRate[-relevantStepsForCalculation:]) / relevantStepsForCalculation
+    ratioOfRelevantLastSteps = 0.033
+    relevantSteps = int(numberOfSteps * ratioOfRelevantLastSteps) 
+    meanDonationRateOfLastSteps = sum(donationRate[-relevantSteps:]) / relevantSteps
     return meanDonationRateOfLastSteps
 
 
@@ -13,17 +14,16 @@ def mean_donation_rate_of_one_run(donationRate):
 def run_model(ourModel, numberOfSteps = 100, saveDonationRateList = False, pathToFile = None):
     donationRate = list()
     for i in range(numberOfSteps):
-        ourModel.step()
-        genStats = ourModel.get_donation_statistics_for_gen()
-        donationRate.append(genStats.sumOfDonationsMadeInGen / genStats.sumOfDonationAttemptedInGen)
+        statsPerGen = ourModel.step()
+        donationRate.append(statsPerGen.donationRateInGen)
     meanDonationRateOfLastSteps = mean_donation_rate_of_one_run(donationRate=donationRate)
     
     if saveDonationRateList == True:
-        file = open(pathToFile,'w')
+        file = open(pathToFile,'w+')
         file.writelines(donationRate)
         file.close()
 
-    return meanDonationRateOfLastSteps #TODO maybe think about other structure here
+    return meanDonationRateOfLastSteps 
 
 
 def run_sensitivity_analysis(numberOfSteps = 100, 
@@ -38,6 +38,8 @@ def run_sensitivity_analysis(numberOfSteps = 100,
                              pathToFile = None): 
     
     model = CooperationModel(populationSize=populationSize, toleranceMinimum=toleranceMinimum)
+    output = list()
+    runNumber = 1
 
     for costAndBenefit in costAndBenefitRange:
         cost = costAndBenefit[0]
@@ -47,7 +49,8 @@ def run_sensitivity_analysis(numberOfSteps = 100,
                 for cheaterMutationRate in cheaterMutationRateRange:
                     for networkType in networkTypeRange:
                         for radiusForMateSelection in radiusForMateSelectionRange:
-                            modelCopy = copy.deepcopy(model)
+                            #modelCopy = copy.deepcopy(model)
+                            modelCopy = CooperationModel(populationSize=populationSize, toleranceMinimum=toleranceMinimum) #TODO Just for testing!!
                             modelCopy.cost = cost
                             modelCopy.benefit = benefit
                             modelCopy.numberOfPairings = numberOfPairings
@@ -57,7 +60,7 @@ def run_sensitivity_analysis(numberOfSteps = 100,
                             modelCopy.radiusForMateSelection = radiusForMateSelection
 
                             meanDonationRateOfLastSteps = run_model(modelCopy, numberOfSteps=numberOfSteps)
-                            parameterDict = {'numberOfSteps': numberOfSteps, 
+                            parameters = {'numberOfSteps': numberOfSteps, 
                                              'populationSize': populationSize,
                                              'toleranceMinimum': toleranceMinimum,
                                              'cost': cost,
@@ -68,14 +71,16 @@ def run_sensitivity_analysis(numberOfSteps = 100,
                                              'networkType': networkType,
                                              'radiusForMateSelection': radiusForMateSelection
                                              }
-                            if pathToFile != None:
-                                file = open(pathToFile,'a')
-                                file.write((meanDonationRateOfLastSteps, parameterDict))
-                                file.write('\n')
-                                file.close()
+                            
+                            output.append({'meanDonationRateOfLastSteps': meanDonationRateOfLastSteps, 'parameters': parameters})
+                            
+    outputJson = json.dumps(output, indent=4)
+    with open(pathToFile, "w") as outfile:
+        outfile.write(outputJson)
+    
+                            
+                                
                             
                             
 
 
-testModel = CooperationModel()
-copytestModel = copy.deepcopy(testModel)
