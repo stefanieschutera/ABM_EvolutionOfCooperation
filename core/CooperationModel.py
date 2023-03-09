@@ -111,7 +111,7 @@ class CooperationModel:
         self.giving_birth_to_next_gen()
         return statsPerGen
 
-    def get_donation_statistic_for_gen(self):
+    def _get_donation_statistic_for_gen(self):
         statsPerGen = StatsPerGen()
         for agent in self.agents:
             statsPerGen.sumOfDonationsMadeInGen += agent.donationsMade
