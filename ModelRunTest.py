@@ -1,7 +1,7 @@
 from core.CooperationModel import CooperationModel
 
 
-testModel = CooperationModel(populationSize=10)
+testModel = CooperationModel(populationSize=10, cheaterMutationRate=0.9)
 
 for agent in testModel.agents:
     print(agent.ID, agent.fitness, agent.tag, agent.tolerance)
