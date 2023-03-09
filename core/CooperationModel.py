@@ -44,9 +44,10 @@ class CooperationModel:
         self.toleranceMinimum = toleranceMinimum  # TODO use it
         self.cheaterType = cheaterType  # TODO use it
         self.agents = self.initialize_agents()
-        self.networkType = networkType  # TODO use it
+        self.networkType = networkType 
         self.network = self.initialize_network()
         self.radiusForMateSelection = radiusForMateSelection
+        self.initialize_agent_neighbors()
         self.randomSeed = randomSeed
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
@@ -67,15 +68,19 @@ class CooperationModel:
             raise Exception("Network Type unknown")
         return network
     
+    def initialize_agent_neighbors(self):
+        for agent in self.agents:
+            neighborsWithinRadius = nx.single_source_shortest_path(self.network, agent, cutoff=self.radiusForMateSelection)
+            neighborsWithinRadius.pop(agent)
+            agent.neighborsWithinRadius = list(neighborsWithinRadius)
+    
     def plot_network(self):
         fig, ax = plt.subplots()
         nx.draw_networkx(self.network, with_labels=False, ax = ax)
         plt.show()
 
     def find_mate(self, currentAgent):
-        neighborsWithinRadius = nx.single_source_shortest_path(self.network, currentAgent, cutoff=self.radiusForMateSelection)
-        neighborsWithinRadius.pop(currentAgent)
-        mate = random.choice(list(neighborsWithinRadius))
+        mate = random.choice(currentAgent.neighborsWithinRadius)
         return mate
 
     def pairing(self):
@@ -102,9 +107,8 @@ class CooperationModel:
         self.pairing()
         self.mating()
         self.mutating()
-        statsPerGen = self.get_donation_statistic_for_gen()
         self.giving_birth_to_next_gen()
-        return statsPerGen
+        
 
     def get_donation_statistic_for_gen(self):
         statsPerGen = StatsPerGen()
