@@ -72,7 +72,7 @@ class CooperationModel:
         else:
             raise Exception("Network Type unknown")
         return network
-        
+
     def plot_network(self):
         fig, ax = plt.subplots()
         nx.draw_networkx(self.network, with_labels=False, ax=ax)
@@ -107,13 +107,13 @@ class CooperationModel:
         self.pairing()
         self.mating()
         self.mutating()
-        statsPerGen = self.get_donation_statistic_for_gen()
+        statsPerGen = self._get_donation_statistic_for_gen()
         self.giving_birth_to_next_gen()
         return statsPerGen
 
     def _get_donation_statistic_for_gen(self):
         statsPerGen = StatsPerGen()
         for agent in self.agents:
-            statsPerGen.get_donation_statistic_for_gen(agent)
+            statsPerGen.add_agents_donation_values(agent)
         statsPerGen.calculate_donation_rate()
         return statsPerGen
