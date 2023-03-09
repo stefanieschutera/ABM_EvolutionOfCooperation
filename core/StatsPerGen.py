@@ -1,6 +1,3 @@
-import copy
-import random
-import numpy as np
 
 
 class StatsPerGen:
@@ -13,3 +10,4 @@ class StatsPerGen:
         print("Number of donations made in this generation = ", self.sumOfDonationsMadeInGen)
         print("Number of donations attempted in this generation = ", self.sumOfDonationAttemptedInGen)
         print("Donation Rate for this generation = ", (self.sumOfDonationsMadeInGen / self.sumOfDonationAttemptedInGen) * 100, "%")
+

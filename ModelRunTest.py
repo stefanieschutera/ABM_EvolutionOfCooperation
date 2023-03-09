@@ -9,6 +9,7 @@ for agent in testModel.agents:
 for index in range(3):
     statsPerGen = testModel.step()
     statsPerGen.printStats()
+testModel.plot_network()
 
 for agent in testModel.agents:
     print(agent.ID, agent.fitness, agent.tag, agent.tolerance)
