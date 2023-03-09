@@ -6,3 +6,6 @@ Cleanup
 - Create Conda Env file for setup
 - Upload to Comses
 - Resolve TODOs
+
+Future Features
+- Freerider/Cheater flag

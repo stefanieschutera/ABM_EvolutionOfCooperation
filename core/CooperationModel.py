@@ -31,7 +31,7 @@ class CooperationModel:
 
     '''
 
-    def __init__(self, populationSize=100, cost=1.0, benefit=0.05, numberOfPairings=3, mutationRate=0.1, toleranceMinimum=0, cheaterType=None, networkType='complete', radiusForMateSelection = 1, randomSeed=None) -> None:
+    def __init__(self, populationSize=100, cost=1.0, benefit=0.05, numberOfPairings=3, mutationRate=0.1, toleranceMinimum=0, cheaterMutationRate=0, networkType='complete', radiusForMateSelection = 1, randomSeed=None) -> None:
         self.populationSize = populationSize
         self.cost = cost
         self.benefit = benefit
@@ -42,7 +42,7 @@ class CooperationModel:
         self.noise = np.random.normal(
             centreOfDistribution, standardDeviationOfDistribution)
         self.toleranceMinimum = toleranceMinimum  # TODO use it
-        self.cheaterType = cheaterType  # TODO use it
+        self.cheaterMutationRate = cheaterMutationRate
         self.agents = self.initialize_agents()
         self.networkType = networkType  # TODO use it
         self.network = self.initialize_network()
@@ -92,7 +92,7 @@ class CooperationModel:
 
     def mutating(self):
         for agent in self.agents:
-            agent.mutate(self.mutationRate, self.noise)
+            agent.mutate(self.mutationRate, self.noise, self.cheaterMutationRate)
 
     def giving_birth_to_next_gen(self):
         for agent in self.agents:
