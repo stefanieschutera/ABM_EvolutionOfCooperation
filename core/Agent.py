@@ -37,6 +37,7 @@ class Agent:
         self.tolerance = random.random()
         self.cheaterFlag = False
         self.fitness = 0
+        self.neighborsWithinRadius = None
         self.childTag = None
         self.childTolerance = None
         self.childCheaterFlag = None
