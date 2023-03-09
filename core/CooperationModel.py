@@ -85,13 +85,13 @@ class CooperationModel:
     def pairing(self):
         for agent in self.agents:
             for p in range(self.numberOfPairings):
-                mate = self.find_mate(agent)
+                mate = random.choice(agent.neighborsWithinRadius)
                 agent.donate(recipient=mate, cost=self.cost,
                              benefit=self.benefit)
 
     def mating(self):
         for agent in self.agents:
-            mate = self.find_mate(agent)
+            mate = random.choice(agent.neighborsWithinRadius)
             agent.compare_fitness(mate)
 
     def mutating(self):
