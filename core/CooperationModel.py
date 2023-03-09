@@ -44,7 +44,7 @@ class CooperationModel:
         self.toleranceMinimum = toleranceMinimum  # TODO use it
         self.cheaterType = cheaterType  # TODO use it
         self.agents = self.initialize_agents()
-        self.networkType = networkType  # TODO use it
+        self.networkType = networkType 
         self.network = self.initialize_network()
         self.radiusForMateSelection = radiusForMateSelection
         self.randomSeed = randomSeed
@@ -102,9 +102,8 @@ class CooperationModel:
         self.pairing()
         self.mating()
         self.mutating()
-        statsPerGen = self.get_donation_statistic_for_gen()
         self.giving_birth_to_next_gen()
-        return statsPerGen
+        
 
     def get_donation_statistic_for_gen(self):
         statsPerGen = StatsPerGen()

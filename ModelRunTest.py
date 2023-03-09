@@ -1,5 +1,5 @@
 from core.CooperationModel import CooperationModel
-from core.StatsPerGen import StatsPerGen
+
 
 testModel = CooperationModel(populationSize=10)
 
