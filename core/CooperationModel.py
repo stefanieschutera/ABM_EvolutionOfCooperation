@@ -31,7 +31,7 @@ class CooperationModel:
 
     '''
 
-    def __init__(self, populationSize=100, cost=1.0, benefit=0.05, numberOfPairings=3, mutationRate=0.1, toleranceMinimum=0, cheaterMutationRate=0, networkType='complete', radiusForMateSelection = 1, randomSeed=None) -> None:
+    def __init__(self, populationSize=100, cost=1.0, benefit=0.05, numberOfPairings=3, mutationRate=0.1, toleranceMinimum=0, cheaterMutationRate=0, networkType='complete', radiusForMateSelection=1, randomSeed=None) -> None:
         self.populationSize = populationSize
         self.cost = cost
         self.benefit = benefit
@@ -44,7 +44,7 @@ class CooperationModel:
         self.toleranceMinimum = toleranceMinimum  # TODO use it
         self.cheaterMutationRate = cheaterMutationRate
         self.agents = self.initialize_agents()
-        self.networkType = networkType 
+        self.networkType = networkType
         self.network = self.initialize_network()
         self.radiusForMateSelection = radiusForMateSelection
         self.initialize_agent_neighbors()
@@ -58,7 +58,7 @@ class CooperationModel:
         for i in range(1, self.populationSize + 1):
             agents.add(Agent(ID=i))
         return agents
-    
+
     def initialize_network(self):
         if self.networkType == 'complete':
             network = nx.complete_graph(self.agents)
@@ -67,16 +67,17 @@ class CooperationModel:
         else:
             raise Exception("Network Type unknown")
         return network
-    
+
     def initialize_agent_neighbors(self):
         for agent in self.agents:
-            neighborsWithinRadius = nx.single_source_shortest_path(self.network, agent, cutoff=self.radiusForMateSelection)
+            neighborsWithinRadius = nx.single_source_shortest_path(
+                self.network, agent, cutoff=self.radiusForMateSelection)
             neighborsWithinRadius.pop(agent)
             agent.neighborsWithinRadius = list(neighborsWithinRadius)
-    
+
     def plot_network(self):
         fig, ax = plt.subplots()
-        nx.draw_networkx(self.network, with_labels=False, ax = ax)
+        nx.draw_networkx(self.network, with_labels=False, ax=ax)
         plt.show()
 
     def find_mate(self, currentAgent):
@@ -97,7 +98,8 @@ class CooperationModel:
 
     def mutating(self):
         for agent in self.agents:
-            agent.mutate(self.mutationRate, self.noise, self.cheaterMutationRate)
+            agent.mutate(self.mutationRate, self.noise,
+                         self.cheaterMutationRate)
 
     def giving_birth_to_next_gen(self):
         for agent in self.agents:
@@ -108,13 +110,10 @@ class CooperationModel:
         self.mating()
         self.mutating()
         self.giving_birth_to_next_gen()
-        
 
     def get_donation_statistic_for_gen(self):
         statsPerGen = StatsPerGen()
         for agent in self.agents:
-            statsPerGen.sumOfDonationsMadeInGen += agent.donationsMade
-            statsPerGen.sumOfDonationAttemptedInGen += agent.donationsAttempted
-        statsPerGen.donationRateInGen = statsPerGen.sumOfDonationsMadeInGen / statsPerGen.sumOfDonationAttemptedInGen
+            statsPerGen.get_donation_statistic_for_gen(agent)
+        statsPerGen.calculate_donation_rate()
         return statsPerGen
-
