@@ -109,7 +109,7 @@ class CooperationModel:
     def get_donation_statistic_for_gen(self):
         statsPerGen = StatsPerGen()
         for agent in self.agents:
-            getGenStats.sumOfDonationsMadeInGen += agent.donationsMade
-            getGenStats.sumOfDonationAttemptedInGen += agent.donationsAttempted
-        return getGenStats
+            statsPerGen.sumOfDonationsMadeInGen += agent.donationsMade
+            statsPerGen.sumOfDonationAttemptedInGen += agent.donationsAttempted
+        return statsPerGen
 
