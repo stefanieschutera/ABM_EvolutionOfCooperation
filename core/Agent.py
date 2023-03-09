@@ -1,5 +1,6 @@
 import copy
 import random
+import networkx as nx
 
 
 class Agent:
@@ -33,16 +34,26 @@ class Agent:
 
     def __init__(self, ID) -> None:
         self.ID = ID
-        self.tag = random.random()
-        self.tolerance = random.random()
-        self.cheaterFlag = False
-        self.fitness = 0
         self.neighborsWithinRadius = None
+        tolerance, tag, cheaterFlag = random.random(), random.random(), False
+        self._initialize_agent(tolerance, tag, cheaterFlag)
+
+    def _initialize_agent(self, tolerance, tag, cheaterFlag):
+        self.tolerance = tolerance
+        self.tag = tag
+        self.cheaterFlag = cheaterFlag
+        self.fitness = 0
         self.childTag = None
         self.childTolerance = None
         self.childCheaterFlag = None
         self.donationsMade = 0
         self.donationsAttempted = 0
+
+    def initialize_agent_neighbors(self, radiusForMateSelection, network):
+        neighborsWithinRadius = nx.single_source_shortest_path(
+            network, self, cutoff=radiusForMateSelection)
+        neighborsWithinRadius.pop(self)
+        self.neighborsWithinRadius = list(neighborsWithinRadius)
 
     def donate(self, recipient, cost, benefit):
         if self.cheaterFlag == False:
@@ -81,7 +92,6 @@ class Agent:
                 self.childCheaterFlag = False
 
     def give_birth(self):
-        self.tolerance = copy.deepcopy(self.childTolerance)
-        self.tag = copy.deepcopy(self.childTag)
-        self.cheaterFlag = copy.deepcopy(self.childCheaterFlag)
-        self.childTag, self.childTolerance, self.childCheaterFlag, self.fitness = None, None, None, 0
+        tolerance, tag, cheaterFlag = copy.deepcopy(
+            self.childTolerance), copy.deepcopy(self.childTag), copy.deepcopy(self.childCheaterFlag)
+        self._initialize_agent(tolerance, tag, cheaterFlag)
