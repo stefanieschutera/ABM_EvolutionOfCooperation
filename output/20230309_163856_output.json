@@ -1,0 +1,77 @@
+[
+    {
+        "meanDonationRateOfLastSteps": 0.12583333333333332,
+        "parameters": {
+            "numberOfSteps": 100,
+            "populationSize": 400,
+            "toleranceMinimum": 0,
+            "cost": 0.05,
+            "benefit": 1,
+            "numberOfPairings": 1,
+            "mutationRate": 0.1,
+            "cheaterMutationRate": 0,
+            "networkType": "complete",
+            "radiusForMateSelection": 1
+        }
+    },
+    {
+        "meanDonationRateOfLastSteps": 0.6875,
+        "parameters": {
+            "numberOfSteps": 100,
+            "populationSize": 400,
+            "toleranceMinimum": 0,
+            "cost": 0.05,
+            "benefit": 1,
+            "numberOfPairings": 2,
+            "mutationRate": 0.1,
+            "cheaterMutationRate": 0,
+            "networkType": "complete",
+            "radiusForMateSelection": 1
+        }
+    },
+    {
+        "meanDonationRateOfLastSteps": 0.7716666666666668,
+        "parameters": {
+            "numberOfSteps": 100,
+            "populationSize": 400,
+            "toleranceMinimum": 0,
+            "cost": 0.05,
+            "benefit": 1,
+            "numberOfPairings": 3,
+            "mutationRate": 0.1,
+            "cheaterMutationRate": 0,
+            "networkType": "complete",
+            "radiusForMateSelection": 1
+        }
+    },
+    {
+        "meanDonationRateOfLastSteps": 0.7602083333333333,
+        "parameters": {
+            "numberOfSteps": 100,
+            "populationSize": 400,
+            "toleranceMinimum": 0,
+            "cost": 0.05,
+            "benefit": 1,
+            "numberOfPairings": 4,
+            "mutationRate": 0.1,
+            "cheaterMutationRate": 0,
+            "networkType": "complete",
+            "radiusForMateSelection": 1
+        }
+    },
+    {
+        "meanDonationRateOfLastSteps": 0.8143333333333332,
+        "parameters": {
+            "numberOfSteps": 100,
+            "populationSize": 400,
+            "toleranceMinimum": 0,
+            "cost": 0.05,
+            "benefit": 1,
+            "numberOfPairings": 5,
+            "mutationRate": 0.1,
+            "cheaterMutationRate": 0,
+            "networkType": "complete",
+            "radiusForMateSelection": 1
+        }
+    }
+]
