@@ -47,6 +47,7 @@ class CooperationModel:
         self.networkType = networkType 
         self.network = self.initialize_network()
         self.radiusForMateSelection = radiusForMateSelection
+        self.initialize_agent_neighbors()
         self.randomSeed = randomSeed
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
@@ -67,15 +68,19 @@ class CooperationModel:
             raise Exception("Network Type unknown")
         return network
     
+    def initialize_agent_neighbors(self):
+        for agent in self.agents:
+            neighborsWithinRadius = nx.single_source_shortest_path(self.network, agent, cutoff=self.radiusForMateSelection)
+            neighborsWithinRadius.pop(agent)
+            agent.neighborsWithinRadius = list(neighborsWithinRadius)
+    
     def plot_network(self):
         fig, ax = plt.subplots()
         nx.draw_networkx(self.network, with_labels=False, ax = ax)
         plt.show()
 
     def find_mate(self, currentAgent):
-        neighborsWithinRadius = nx.single_source_shortest_path(self.network, currentAgent, cutoff=self.radiusForMateSelection)
-        neighborsWithinRadius.pop(currentAgent)
-        mate = random.choice(list(neighborsWithinRadius))
+        mate = random.choice(currentAgent.neighborsWithinRadius)
         return mate
 
     def pairing(self):
