@@ -1,6 +1,7 @@
 import copy
 import random
 import networkx as nx
+import numpy as np
 
 
 class Agent:
@@ -80,8 +81,12 @@ class Agent:
         self.childTolerance = copy.deepcopy(parent.tolerance)
         self.childCheaterFlag = copy.deepcopy(parent.cheaterFlag)
 
-    def mutate(self, mutationRate, noise):
+    def mutate(self, mutationRate):
         if random.random() < mutationRate:
+            centreOfDistribution = 0
+            standardDeviationOfDistribution = 0.01
+            noise = np.random.normal(
+                centreOfDistribution, standardDeviationOfDistribution)
             self.childTolerance += noise
             if self.childTolerance < 0:
                 self.childTolerance = 0
@@ -89,10 +94,11 @@ class Agent:
             self.childTag = random.random()
             # If cheaterFlag is True then this means that this agent WILL NEVER DONATE
             # If cheaterMutationRate is 0 then this means that cheaterFlag is False
-        if random.random() <= mutationRate:
-                self.childCheaterFlag = True
-            else:
-                self.childCheaterFlag = False
+        # remove cheater
+        # if random.random() <= mutationRate:
+            # self.childCheaterFlag = True
+        # else:
+            # self.childCheaterFlag = False
 
     def give_birth(self):
         tolerance, tag, cheaterFlag = copy.deepcopy(

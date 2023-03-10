@@ -21,16 +21,17 @@ configVaryingPairingsTest1 = {"numberOfSteps": 2000,
                               }
 
 # 20230310_134954_output.json
-configVaryingPairingsTest2 = {"numberOfSteps": 5000,
-                              "populationSize": 250,
-                              "toleranceMinimum": -10**(-6),
-                              "costAndBenefitRange": [(0.1, 1)],
-                              "numberOfPairingsRange": [9],
-                              "mutationRateRange": [0.01],
-                              "cheaterMutationRateRange": [0],
-                              "networkTypeRange": ['cycle'],
-                              "radiusForMateSelectionRange": [1],
-                              }
+# 20230310_142326_output.json
+configVaryingPairingsTest = {"numberOfSteps": 5000,
+                             "populationSize": 250,
+                             "toleranceMinimum": -10**(-6),
+                             "costAndBenefitRange": [(0.1, 1)],
+                             "numberOfPairingsRange": [9],
+                             "mutationRateRange": [0.01],
+                             "cheaterMutationRateRange": [0],
+                             "networkTypeRange": ['cycle'],
+                             "radiusForMateSelectionRange": [1],
+                             }
 
 # cycle vs complete 20230310_135957_output.json
 configVaryingPairingsTest3 = {"numberOfSteps": 5000,
@@ -70,13 +71,13 @@ configVaryingPairingsTest5 = {"numberOfSteps": 5000,
                               }
 
 
-configVaryingPairingsTest = {"numberOfSteps": 5000,
-                             "populationSize": 200,
-                             "toleranceMinimum": -10**(-6),
-                             "costAndBenefitRange": [(0.1, 1)],
-                             "numberOfPairingsRange": [9],
-                             "mutationRateRange": [0.1],
-                             "cheaterMutationRateRange": [0],
-                             "networkTypeRange": ['cycle', 'complete'],
-                             "radiusForMateSelectionRange": [1],
-                             }
+configVaryingPairingsTest6 = {"numberOfSteps": 5000,
+                              "populationSize": 200,
+                              "toleranceMinimum": -10**(-6),
+                              "costAndBenefitRange": [(0.1, 1)],
+                              "numberOfPairingsRange": [9],
+                              "mutationRateRange": [0.1],
+                              "cheaterMutationRateRange": [0],
+                              "networkTypeRange": ['cycle', 'complete'],
+                              "radiusForMateSelectionRange": [1],
+                              }

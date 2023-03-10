@@ -1,5 +1,4 @@
 import random
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -48,11 +47,6 @@ class CooperationModel:
         self.radiusForMateSelection = radiusForMateSelection
         self.initialize_agent_neighbors()
 
-        centreOfDistribution = 0
-        standardDeviationOfDistribution = 0.01
-        self.noise = np.random.normal(
-            centreOfDistribution, standardDeviationOfDistribution)
-
         self.randomSeed = randomSeed
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
@@ -98,7 +92,7 @@ class CooperationModel:
 
     def mutating(self):
         for agent in self.agents:
-            agent.mutate(self.mutationRate, self.noise)
+            agent.mutate(self.mutationRate)
 
     def giving_birth_to_next_gen(self):
         for agent in self.agents:
