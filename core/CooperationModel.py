@@ -1,5 +1,4 @@
 import random
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -8,6 +7,9 @@ from core.StatsPerGen import StatsPerGen
 
 
 class CooperationModel:
+
+    # TODO Update comment
+
     '''
     Class holding the environment of the ABM
 
@@ -37,17 +39,14 @@ class CooperationModel:
         self.benefit = benefit
         self.numberOfPairings = numberOfPairings
         self.mutationRate = mutationRate
-        centreOfDistribution = 0
-        standardDeviationOfDistribution = 0.01
-        self.noise = np.random.normal(
-            centreOfDistribution, standardDeviationOfDistribution)
-        self.toleranceMinimum = toleranceMinimum  # TODO use it
+        self.toleranceMinimum = toleranceMinimum
         self.cheaterMutationRate = cheaterMutationRate
-        self.networkType = networkType
         self.agents = self.initialize_agents()
+        self.networkType = networkType
         self.network = self.initialize_network()
         self.radiusForMateSelection = radiusForMateSelection
         self.initialize_agent_neighbors()
+
         self.randomSeed = randomSeed
         if self.randomSeed is not None:
             random.seed(self.randomSeed)
@@ -65,6 +64,7 @@ class CooperationModel:
                 radiusForMateSelection=self.radiusForMateSelection, network=self.network,)
 
     def initialize_network(self):
+        # Graph Generators Docs: https://networkx.org/documentation/stable/reference/generators.html
         if self.networkType == 'complete':
             network = nx.complete_graph(self.agents)
         elif self.networkType == 'cycle':
@@ -77,10 +77,6 @@ class CooperationModel:
         fig, ax = plt.subplots()
         nx.draw_networkx(self.network, with_labels=False, ax=ax)
         plt.show()
-
-    def find_mate(self, currentAgent):
-        mate = random.choice(currentAgent.neighborsWithinRadius)
-        return mate
 
     def pairing(self):
         for agent in self.agents:
@@ -96,8 +92,7 @@ class CooperationModel:
 
     def mutating(self):
         for agent in self.agents:
-            agent.mutate(self.mutationRate, self.noise,
-                         self.cheaterMutationRate)
+            agent.mutate(self.mutationRate)
 
     def giving_birth_to_next_gen(self):
         for agent in self.agents:

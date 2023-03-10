@@ -1,27 +1,28 @@
 from SensitivityAnalysis import *
 from datetime import datetime
+from ModelConfigs import configVaryingPairingsTest
 import sys
+import os
 
 sys.setrecursionlimit(100000)
 
 start = datetime.now()
 
+if not os.path.exists('output'):
+    os.mkdir('output')
 file = 'output/' + start.strftime("%Y%m%d_%H%M%S") + '_output.json'
 
-numberOfSteps = 100
-
-run_sensitivity_analysis(numberOfSteps=numberOfSteps,
-                         populationSize=400,
-                         toleranceMinimum=0,
-                         costAndBenefitRange=[(0.05, 1)],
-                         numberOfPairingsRange=[1, 2, 3, 4, 5],
-                         mutationRateRange=[0.1],
-                         cheaterMutationRateRange=[0],
-                         networkTypeRange=['complete'],
-                         radiusForMateSelectionRange=[1],
+run_sensitivity_analysis(numberOfSteps=configVaryingPairingsTest["numberOfSteps"],
+                         populationSize=configVaryingPairingsTest["populationSize"],
+                         toleranceMinimum=configVaryingPairingsTest["toleranceMinimum"],
+                         costAndBenefitRange=configVaryingPairingsTest["costAndBenefitRange"],
+                         numberOfPairingsRange=configVaryingPairingsTest["numberOfPairingsRange"],
+                         mutationRateRange=configVaryingPairingsTest["mutationRateRange"],
+                         cheaterMutationRateRange=configVaryingPairingsTest["cheaterMutationRateRange"],
+                         networkTypeRange=configVaryingPairingsTest["networkTypeRange"],
+                         radiusForMateSelectionRange=configVaryingPairingsTest[
+                             "radiusForMateSelectionRange"],
                          pathToFile=file)
 
-
-passed_time = datetime.now() - start
-
-print("Passed Time for ", numberOfSteps, "time steps =", passed_time)
+print("Passed time for ",
+      configVaryingPairingsTest["numberOfSteps"],  "time steps =", datetime.now() - start)

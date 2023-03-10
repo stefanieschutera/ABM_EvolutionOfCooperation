@@ -1,9 +1,12 @@
 import copy
 import random
 import networkx as nx
+import numpy as np
 
 
 class Agent:
+
+    # TODO Update comment
     '''
     Class holding the agents of the ABM
 
@@ -47,7 +50,7 @@ class Agent:
         self.childTolerance = None
         self.childCheaterFlag = None
         self.donationsMade = 0
-        self.donationsAttempted = 0
+        self.noOfDonationInteractions = 0
 
     def initialize_agent_neighbors(self, radiusForMateSelection, network):
         neighborsWithinRadius = nx.single_source_shortest_path(
@@ -62,7 +65,7 @@ class Agent:
                 self.fitness -= cost
                 recipient.fitness += benefit
                 self.donationsMade += 1
-            self.donationsAttempted += 1
+        self.noOfDonationInteractions += 1
 
     def compare_fitness(self, mate):
         if self.fitness > mate.fitness:
@@ -78,18 +81,24 @@ class Agent:
         self.childTolerance = copy.deepcopy(parent.tolerance)
         self.childCheaterFlag = copy.deepcopy(parent.cheaterFlag)
 
-    def mutate(self, mutationRate, noise, cheaterMutationRate):
+    def mutate(self, mutationRate):
         if random.random() < mutationRate:
+            centreOfDistribution = 0
+            standardDeviationOfDistribution = 0.01
+            noise = np.random.normal(
+                centreOfDistribution, standardDeviationOfDistribution)
             self.childTolerance += noise
             if self.childTolerance < 0:
                 self.childTolerance = 0
+        if random.random() < mutationRate:
             self.childTag = random.random()
             # If cheaterFlag is True then this means that this agent WILL NEVER DONATE
             # If cheaterMutationRate is 0 then this means that cheaterFlag is False
-            if random.random() <= cheaterMutationRate:
-                self.childCheaterFlag = True
-            else:
-                self.childCheaterFlag = False
+        # remove cheater
+        # if random.random() <= mutationRate:
+            # self.childCheaterFlag = True
+        # else:
+            # self.childCheaterFlag = False
 
     def give_birth(self):
         tolerance, tag, cheaterFlag = copy.deepcopy(
