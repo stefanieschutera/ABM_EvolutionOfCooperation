@@ -8,6 +8,10 @@ Re-implement the evolution of cooperation model (SH 2015) as an object-oriented 
 
 # BIGGEST STRUGGLES
 
+- little experience with Netlogo and Python
+- interdependencies in between tasks
+- short amount of time
+
 # OUTLOOK/ NEXT STEPS
 
 - debugging
