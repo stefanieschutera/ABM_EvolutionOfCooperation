@@ -1,10 +1,9 @@
 # Only for Testing
-import csv
+
+# TODO Maybe refactor
 
 import matplotlib.pyplot as plt
-import csv
 import json
-
 
 from core.CooperationModel import CooperationModel
 
@@ -28,7 +27,6 @@ with open('output/20230309_163856_output.json', 'r') as openfile:
     # Reading from json file
     output = json.load(openfile)
 
-
 xvalues = []
 yvalues = []
 radiusForMateSelection = output[0]["parameters"]["radiusForMateSelection"]
@@ -38,15 +36,15 @@ for index in range(len(output)):
     yvalues.append(output[index]["meanDonationRateOfLastSteps"])
 
 ax = plt.axes()
-plt.plot(xvalues, yvalues, color = 'g',
-         linestyle = 'dashed', marker = 'o',
-         label = "R = "+  str(radiusForMateSelection) + " ")
+plt.plot(xvalues, yvalues, color='g',
+         linestyle='dashed', marker='o',
+         label="R = " + str(radiusForMateSelection) + " ")
 plt.xlabel('Pairings')
 plt.ylabel('Mean Donation Rate')
 
 ax.set_xticks(xvalues)
 ax.set_yticks(yvalues)
-plt.title('Sensitivity Analysis', fontsize = 20)
+plt.title('Sensitivity Analysis', fontsize=20)
 plt.legend()
 plt.show()
 
