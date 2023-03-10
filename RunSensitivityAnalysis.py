@@ -17,9 +17,10 @@ run_sensitivity_analysis(numberOfSteps=numberOfSteps,
                          numberOfPairingsRange=[1, 2, 3, 4, 5],
                          mutationRateRange=[0.1],
                          cheaterMutationRateRange=[0],
-                         networkTypeRange=['complete'],
+                         networkTypeRange=['complete'], #Right now only options are 'complete' and 'cycle'
                          radiusForMateSelectionRange=[1],
-                         pathToFile=file)
+                         pathToFile=file,
+                         numberOfSimulationsPerConfig=2)
 
 
 passed_time = datetime.now() - start
