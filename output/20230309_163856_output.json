@@ -2,7 +2,7 @@
     {
         "meanDonationRateOfLastSteps": 0.12583333333333332,
         "parameters": {
-            "numberOfSteps": 100,
+            "numberOfSteps": 200,
             "populationSize": 400,
             "toleranceMinimum": 0,
             "cost": 0.05,
@@ -17,7 +17,7 @@
     {
         "meanDonationRateOfLastSteps": 0.6875,
         "parameters": {
-            "numberOfSteps": 100,
+            "numberOfSteps": 50,
             "populationSize": 400,
             "toleranceMinimum": 0,
             "cost": 0.05,
