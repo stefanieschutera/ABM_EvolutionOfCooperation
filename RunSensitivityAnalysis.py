@@ -1,28 +1,29 @@
 from SensitivityAnalysis import *
 from datetime import datetime
+from ModelConfigs import configVaryingPairingsBC10
 import sys
+import os
 
 sys.setrecursionlimit(100000)
-
 start = datetime.now()
+
+if not os.path.exists('output'):
+    os.mkdir('output')
 
 file = 'output/' + start.strftime("%Y%m%d_%H%M%S") + '_output.json'
 
-numberOfSteps = 100
-
-run_sensitivity_analysis(numberOfSteps=numberOfSteps,
-                         populationSize=400,
-                         toleranceMinimum=0,
-                         costAndBenefitRange=[(0.05, 1)],
-                         numberOfPairingsRange=[1, 2, 3, 4, 5],
-                         mutationRateRange=[0.1],
-                         cheaterMutationRateRange=[0],
-                         networkTypeRange=['complete'], #Right now only options are 'complete' and 'cycle'
-                         radiusForMateSelectionRange=[1],
-                         pathToFile=file,
-                         numberOfSimulationsPerConfig=2)
+run_sensitivity_analysis(numberOfSteps=configVaryingPairingsBC10["numberOfSteps"],
+                         populationSize=configVaryingPairingsBC10["populationSize"],
+                         toleranceMinimum=configVaryingPairingsBC10["toleranceMinimum"],
+                         costAndBenefitRange=configVaryingPairingsBC10["costAndBenefitRange"],
+                         numberOfPairingsRange=configVaryingPairingsBC10["numberOfPairingsRange"],
+                         mutationRateRange=configVaryingPairingsBC10["mutationRateRange"],
+                         cheaterMutationRateRange=configVaryingPairingsBC10["cheaterMutationRateRange"],
+                         networkTypeRange=configVaryingPairingsBC10["networkTypeRange"],
+                         radiusForMateSelectionRange=configVaryingPairingsBC10[
+                             "radiusForMateSelectionRange"],
+                         pathToFile=file)
 
 
-passed_time = datetime.now() - start
-
-print("Passed Time for ", numberOfSteps, "time steps =", passed_time)
+print("Passed time for ",
+      configVaryingPairingsBC10["numberOfSteps"],  "time steps =", datetime.now() - start)

@@ -1,0 +1,10 @@
+configVaryingPairingsBC10 = {"numberOfSteps": 100,
+                             "populationSize": 400,
+                             "toleranceMinimum": 0,
+                             "costAndBenefitRange": [(0.05, 1)],
+                             "numberOfPairingsRange": [1, 2, 3, 4, 5],
+                             "mutationRateRange": [0.1],
+                             "cheaterMutationRateRange": [0],
+                             "networkTypeRange": ['complete'],
+                             "radiusForMateSelectionRange": [1],
+                             }
